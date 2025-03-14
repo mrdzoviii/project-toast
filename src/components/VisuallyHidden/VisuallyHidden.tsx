@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
+import styles from "./VisuallyHidden.module.css";
 
-import styles from './VisuallyHidden.module.css';
+type VisuallyHiddenProps = {
+  children: ReactNode;
+  className?: string;
+} & React.HTMLAttributes<HTMLSpanElement>;
 
-const VisuallyHidden = ({
-  children,
-  className = '',
-  ...delegated
-}) => {
-  const [forceShow, setForceShow] = React.useState(false);
+function VisuallyHidden({ children, className = '', ...delegated }: VisuallyHiddenProps) {
+  const [forceShow, setForceShow] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (process.env.NODE_ENV !== 'production') {
-      const handleKeyDown = (ev) => {
+      const handleKeyDown = (ev: KeyboardEvent) => {
         if (ev.key === 'Alt') {
           setForceShow(true);
         }
@@ -36,10 +36,10 @@ const VisuallyHidden = ({
   }
 
   return (
-    <span className={`${className} ${styles.wrapper}`} {...delegated}>
+      <span className={`${className} ${styles.wrapper}`} {...delegated}>
       {children}
     </span>
   );
-};
+}
 
 export default VisuallyHidden;

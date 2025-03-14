@@ -1,4 +1,3 @@
-import React from 'react';
 
 import Button from '../Button';
 
@@ -39,8 +38,7 @@ function ToastPlayground() {
                 type="radio"
                 name="variant"
                 value="notice"
-              />
-              notice
+              />notice
             </label>
 
             {/* TODO Other Variant radio buttons here */}

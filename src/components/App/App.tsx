@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ToastPlayground from '../ToastPlayground';
-import Footer from '../Footer';
+import ToastPlayground from 'components/ToastPlayground';
+import Footer from 'components/Footer';
 
 function App() {
   return (
