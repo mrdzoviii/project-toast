@@ -18,12 +18,6 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-export type Toast = {
-  id: string;
-  variant: VariantType;
-  message: string;
-};
-
 interface ToastProps {
   variant: VariantType;
   children: string | React.ReactNode;

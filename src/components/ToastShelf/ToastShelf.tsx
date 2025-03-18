@@ -1,15 +1,13 @@
-import Toast, { Toast as ToastType } from "../Toast";
 import styles from "./ToastShelf.module.css";
+import { useContext } from "react";
+import { ToastContext } from "components/ToastProvider";
+import Toast from "components/Toast";
 
-interface ToastShelfProps {
-  queue: ToastType[];
-  removeToast: (id: string) => void;
-}
-
-function ToastShelf({ queue, removeToast }: ToastShelfProps) {
+function ToastShelf() {
+  const { toasts, removeToast } = useContext(ToastContext);
   return (
     <ol className={styles.wrapper}>
-      {queue.map((toast) => (
+      {toasts.map((toast) => (
         <li className={styles.toastWrapper} key={toast.id}>
           <Toast variant={toast.variant} onClose={() => removeToast(toast.id)}>
             {toast.message}

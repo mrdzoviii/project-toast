@@ -1,9 +1,9 @@
 import Button from "../Button";
 
 import styles from "./ToastPlayground.module.css";
-import { useState } from "react";
-import type { Toast } from "components/Toast";
+import { useContext, useState } from "react";
 import ToastShelf from "components/ToastShelf";
+import { ToastContext, ToastContextType } from "components/ToastProvider";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"] as const;
 export type VariantType = typeof VARIANT_OPTIONS[number];
@@ -11,18 +11,14 @@ export type VariantType = typeof VARIANT_OPTIONS[number];
 function ToastPlayground() {
   const [message, setMessage] = useState<string>("");
   const [variant, setVariant] = useState<VariantType>("notice");
-  const [toastQueue, setToastQueue] = useState<Toast[]>([]);
+
+  const { addToast } = useContext<ToastContextType>(ToastContext);
 
   function onToastSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const toast = { id: crypto.randomUUID(), message, variant };
-    setToastQueue((prevQueue) => [...prevQueue, toast]);
+    addToast({ id: crypto.randomUUID(), message, variant });
     setMessage("");
     setVariant("notice");
-  }
-
-  function onToastClose(id: string) {
-    setToastQueue((prevQueue) => prevQueue.filter((toast) => toast.id !== id));
   }
 
   return (
@@ -32,7 +28,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <ToastShelf removeToast={onToastClose} queue={toastQueue} />
+      <ToastShelf />
 
       <form className={styles.controlsWrapper} onSubmit={onToastSubmit}>
         <div className={styles.row}>
