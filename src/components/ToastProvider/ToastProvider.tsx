@@ -1,5 +1,6 @@
 import { createContext, useState, useMemo } from "react";
 import { VariantType } from "components/ToastPlayground";
+import { useEscape } from "hooks/useEscape";
 
 export const ToastContext = createContext<ToastContextType>({
   toasts: [],
@@ -34,6 +35,8 @@ function ToastProvider({ children }: ToastProviderProps) {
     };
     return { toasts, addToast, removeToast };
   }, [toasts]);
+
+  useEscape(() => setToasts([]));
 
   return <ToastContext value={toastContextValue}>{children}</ToastContext>;
 }

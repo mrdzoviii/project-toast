@@ -1,7 +1,7 @@
 import Button from "../Button";
 
 import styles from "./ToastPlayground.module.css";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import ToastShelf from "components/ToastShelf";
 import { ToastContext, ToastContextType } from "components/ToastProvider";
 
@@ -10,6 +10,7 @@ export type VariantType = typeof VARIANT_OPTIONS[number];
 
 function ToastPlayground() {
   const [message, setMessage] = useState<string>("");
+  const messageRef = useRef<HTMLTextAreaElement>(null);
   const [variant, setVariant] = useState<VariantType>("notice");
 
   const { addToast } = useContext<ToastContextType>(ToastContext);
@@ -19,6 +20,7 @@ function ToastPlayground() {
     addToast({ id: crypto.randomUUID(), message, variant });
     setMessage("");
     setVariant("notice");
+    messageRef.current?.focus();
   }
 
   return (
@@ -41,6 +43,7 @@ function ToastPlayground() {
           </label>
           <div className={styles.inputWrapper}>
             <textarea
+              ref={messageRef}
               id="message"
               className={styles.messageInput}
               value={message}

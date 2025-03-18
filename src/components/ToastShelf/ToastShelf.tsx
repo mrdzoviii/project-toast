@@ -2,11 +2,17 @@ import styles from "./ToastShelf.module.css";
 import { useContext } from "react";
 import { ToastContext } from "components/ToastProvider";
 import Toast from "components/Toast";
+import VisuallyHidden from "components/VisuallyHidden";
 
 function ToastShelf() {
   const { toasts, removeToast } = useContext(ToastContext);
   return (
-    <ol className={styles.wrapper}>
+    <ol
+      role="log"
+      aria-live="polite"
+      aria-label="Notification"
+      className={styles.wrapper}
+    >
       {toasts.map((toast) => (
         <li className={styles.toastWrapper} key={toast.id}>
           <Toast variant={toast.variant} onClose={() => removeToast(toast.id)}>
