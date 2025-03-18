@@ -2,13 +2,29 @@ import Button from "../Button";
 
 import styles from "./ToastPlayground.module.css";
 import { useState } from "react";
+import type { Toast } from "components/Toast";
+import ToastShelf from "components/ToastShelf";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"] as const;
-type VariantType = typeof VARIANT_OPTIONS[number];
+export type VariantType = typeof VARIANT_OPTIONS[number];
 
 function ToastPlayground() {
   const [message, setMessage] = useState<string>("");
   const [variant, setVariant] = useState<VariantType>("notice");
+  const [toastQueue, setToastQueue] = useState<Toast[]>([]);
+
+  function onToastSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const toast = { id: crypto.randomUUID(), message, variant };
+    setToastQueue((prevQueue) => [...prevQueue, toast]);
+    setMessage("");
+    setVariant("notice");
+  }
+
+  function onToastClose(id: string) {
+    setToastQueue((prevQueue) => prevQueue.filter((toast) => toast.id !== id));
+  }
+
   return (
     <div className={styles.wrapper}>
       <header>
@@ -16,7 +32,9 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <div className={styles.controlsWrapper}>
+      <ToastShelf removeToast={onToastClose} queue={toastQueue} />
+
+      <form className={styles.controlsWrapper} onSubmit={onToastSubmit}>
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -57,10 +75,12 @@ function ToastPlayground() {
         <div className={styles.row}>
           <div className={styles.label} />
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-            <Button>Pop Toast!</Button>
+            <Button disabled={!message} type="submit">
+              Pop Toast!
+            </Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

@@ -1,16 +1,21 @@
+import Toast, { Toast as ToastType } from "../Toast";
+import styles from "./ToastShelf.module.css";
 
-import Toast from '../Toast';
-import styles from './ToastShelf.module.css';
+interface ToastShelfProps {
+  queue: ToastType[];
+  removeToast: (id: string) => void;
+}
 
-function ToastShelf() {
+function ToastShelf({ queue, removeToast }: ToastShelfProps) {
   return (
     <ol className={styles.wrapper}>
-      <li className={styles.toastWrapper}>
-        <Toast variant="notice">Example notice toast</Toast>
-      </li>
-      <li className={styles.toastWrapper}>
-        <Toast variant="error">Example error toast</Toast>
-      </li>
+      {queue.map((toast) => (
+        <li className={styles.toastWrapper} key={toast.id}>
+          <Toast variant={toast.variant} onClose={() => removeToast(toast.id)}>
+            {toast.message}
+          </Toast>
+        </li>
+      ))}
     </ol>
   );
 }
